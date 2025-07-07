@@ -3,8 +3,16 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  webpack: (config) => {
+    config.resolve.alias['@prisma/client'] = require.resolve('@prisma/client')
+    return config
+  },
+};
 
 export default config;
