@@ -57,11 +57,11 @@ export default function Header() {
                 placeholder="Fahndung suchen..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-lg bg-blue-800 px-4 py-2 text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full rounded-lg bg-blue-800 px-4 py-2 text-white placeholder-blue-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 transform text-blue-300 hover:text-white"
+                className="absolute top-1/2 right-2 -translate-y-1/2 transform text-blue-300 hover:text-white"
               >
                 🔍
               </button>
@@ -75,7 +75,7 @@ export default function Header() {
                 <div className="flex items-center space-x-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-700">
                     <span className="text-sm font-medium text-white">
-                      {session.user?.name?.[0] || "U"}
+                      {session.user?.name?.[0] ?? "U"}
                     </span>
                   </div>
                   <span className="hidden text-sm sm:block">

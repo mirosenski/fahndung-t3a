@@ -133,7 +133,8 @@ export default async function DashboardPage() {
                 <div className="h-2 w-2 rounded-full bg-blue-600"></div>
                 <div className="flex-1">
                   <p className="text-sm text-gray-900">
-                    Neue Fahndung "Vermisste Person in Stuttgart" erstellt
+                    Neue Fahndung &quot;Vermisste Person in Stuttgart&quot;
+                    erstellt
                   </p>
                   <p className="text-xs text-gray-500">vor 2 Stunden</p>
                 </div>
@@ -143,7 +144,7 @@ export default async function DashboardPage() {
                 <div className="h-2 w-2 rounded-full bg-green-600"></div>
                 <div className="flex-1">
                   <p className="text-sm text-gray-900">
-                    Fahndung "Diebstahl Fahrrad" als gelöst markiert
+                    Fahndung &quot;Diebstahl Fahrrad&quot; als gelöst markiert
                   </p>
                   <p className="text-xs text-gray-500">vor 1 Tag</p>
                 </div>
@@ -153,7 +154,8 @@ export default async function DashboardPage() {
                 <div className="h-2 w-2 rounded-full bg-yellow-600"></div>
                 <div className="flex-1">
                   <p className="text-sm text-gray-900">
-                    Neuer Hinweis für Fahndung "Einbruch Freiburg" erhalten
+                    Neuer Hinweis für Fahndung &quot;Einbruch Freiburg&quot;
+                    erhalten
                   </p>
                   <p className="text-xs text-gray-500">vor 2 Tagen</p>
                 </div>
