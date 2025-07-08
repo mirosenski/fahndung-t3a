@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import FahndungList from '~/components/fahndung/FahndungList';
 import SearchBar from '~/components/filter/SearchBar';
 import { useRouter } from 'next/navigation';
@@ -70,7 +70,7 @@ const mockFahndungen = [
   },
 ];
 
-export default function SuchePage() {
+function SuchePageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [filteredFahndungen, setFilteredFahndungen] = useState(mockFahndungen);
@@ -217,5 +217,20 @@ export default function SuchePage() {
         <FahndungList fahndungen={filteredFahndungen} />
       </div>
     </div>
+  );
+}
+
+export default function SuchePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Lade Suchseite...</p>
+        </div>
+      </div>
+    }>
+      <SuchePageContent />
+    </Suspense>
   );
 } 
