@@ -42,9 +42,10 @@ const currentAlerts = [
 
 interface SearchModalProps {
   className?: string;
+  size?: 'default' | 'compact';
 }
 
-export function SearchModal({ className = "" }: SearchModalProps) {
+export function SearchModal({ className = "", size = 'default' }: SearchModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -153,14 +154,16 @@ export function SearchModal({ className = "" }: SearchModalProps) {
         ref={triggerRef}
         onClick={() => setIsOpen(true)}
         className={`
+          flex items-center justify-center p-0
           relative group
-          p-3 rounded-xl
+          rounded-xl
           bg-white dark:bg-gray-900 
           border-2 border-gray-200 dark:border-gray-700
           shadow-lg hover:shadow-xl
           transition-all duration-300 hover:scale-105
           hover:border-blue-500 dark:hover:border-blue-400
           focus:outline-none focus:ring-4 focus:ring-blue-500/20
+          ${size === 'compact' ? 'w-10 h-10' : 'w-12 h-12'}
           ${className}
         `}
         aria-label="Fahndungssuche öffnen (Strg+K)"

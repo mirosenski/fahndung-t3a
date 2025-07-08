@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { User } from "lucide-react";
 
 interface UserAuthProps {
   variant?: 'desktop' | 'mobile';
@@ -112,23 +113,38 @@ export default function UserAuth({
 
   // Styling-Varianten
   const buttonSizeClasses = {
-    default: "px-4 py-2 text-sm",
-    compact: "px-3 py-1.5 text-xs"
+    default: "h-12 px-6 flex items-center justify-center rounded-xl bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20 text-sm font-medium text-gray-900 dark:text-white",
+    compact: "h-10 px-5 flex items-center justify-center rounded-xl bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20 text-xs font-medium text-gray-900 dark:text-white"
   };
   const avatarSizeClasses = {
-    default: "h-8 w-8 text-sm",
-    compact: "h-7 w-7 text-xs"
+    default: "w-12 h-12 flex items-center justify-center p-0 rounded-xl border-2 border-blue-700 dark:border-blue-400 shadow-lg text-lg font-medium bg-blue-700 text-white",
+    compact: "w-10 h-10 flex items-center justify-center p-0 rounded-xl border-2 border-blue-700 dark:border-blue-400 shadow-lg text-base font-medium bg-blue-700 text-white"
   };
-  const avatarBorder = "border-2 border-blue-700 dark:border-blue-400";
 
   // NICHT eingeloggt: Sign-In-Button
   if (!isLoggedIn) {
+    // Mobil: Nur Icon anzeigen
+    if (variant === 'mobile') {
+      return (
+        <Link
+          href="/login"
+          className={`${avatarSizeClasses[size]} flex items-center justify-center bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20`}
+          tabIndex={0}
+          aria-label="Anmelden"
+        >
+          <User className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+        </Link>
+      );
+    }
+    // Desktop: Text anzeigen
     return (
       <Link
         href="/login"
-        className={`rounded-full border border-gray-400 dark:border-gray-600 bg-transparent text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${buttonSizeClasses[size]} ${className}`}
+        className={`${buttonSizeClasses[size]} ${className}`}
+        tabIndex={0}
+        aria-label="Anmelden"
       >
-        Anmelden
+        <span className="block w-full text-center">Anmelden</span>
       </Link>
     );
   }
@@ -151,7 +167,7 @@ export default function UserAuth({
       <div className="flex-shrink-0">
         <button
           ref={avatarButtonRef}
-          className={`flex items-center justify-center rounded-full bg-blue-700 text-white font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-inset ${avatarSizeClasses[size]} ${avatarBorder} transform-none`}
+          className={`${avatarSizeClasses[size]} focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-inset transition-all duration-300 hover:scale-105`}
           tabIndex={0}
           aria-label="Benutzermenü öffnen"
           aria-haspopup="true"
@@ -166,7 +182,7 @@ export default function UserAuth({
           }}
         >
           {userImage ? (
-            <img src={userImage} alt="Profilbild" className="rounded-full object-cover w-full h-full" />
+            <img src={userImage} alt="Profilbild" className="rounded-xl object-cover w-full h-full" />
           ) : (
             <span>D</span>
           )}

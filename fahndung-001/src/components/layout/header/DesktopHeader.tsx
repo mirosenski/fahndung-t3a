@@ -42,7 +42,7 @@ export default function DesktopHeader({ isScrolled }: DesktopHeaderProps) {
           
           {/* Right Actions */}
           <div className="flex items-center gap-3 ml-6">
-            <SearchModal />
+            <SearchModal size={isScrolled ? 'compact' : 'default'} />
             <UserAuth variant="desktop" size={isScrolled ? 'compact' : 'default'} />
             <ThemeToggle />
             <A11nav />
