@@ -6,19 +6,18 @@ export function ThemeScript() {
       dangerouslySetInnerHTML={{
         __html: `
           (function() {
-            function getInitialTheme() {
-              const savedTheme = localStorage.getItem('theme');
-              if (savedTheme) {
-                return savedTheme;
+            try {
+              var theme = null;
+              if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                theme = localStorage.getItem('theme');
+                if (!theme) {
+                  theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
               }
-              return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-            
-            const theme = getInitialTheme();
-            const root = document.documentElement;
-            
-            root.classList.remove('light', 'dark');
-            root.classList.add(theme);
+              if (!theme) theme = 'light';
+              document.documentElement.classList.remove('light', 'dark');
+              document.documentElement.classList.add(theme);
+            } catch(e) {}
           })();
         `,
       }}
