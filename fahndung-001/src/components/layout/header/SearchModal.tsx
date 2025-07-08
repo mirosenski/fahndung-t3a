@@ -171,7 +171,7 @@ export function SearchModal({ className = "", size = 'default' }: SearchModalPro
         aria-expanded={isOpen}
         aria-haspopup="dialog"
       >
-        <Search className="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-blue-600 transition-colors" />
+        <Search className={`${size === 'compact' ? 'w-4 h-4' : 'w-5 h-5'} text-gray-700 dark:text-gray-300 group-hover:text-blue-600 transition-colors`} />
         
         {/* Professional Tooltip */}
         <span className="
@@ -180,6 +180,7 @@ export function SearchModal({ className = "", size = 'default' }: SearchModalPro
           rounded-lg opacity-0 group-hover:opacity-100
           transition-opacity duration-200 pointer-events-none
           whitespace-nowrap shadow-lg
+          hidden sm:block
         ">
           Fahndungssuche (⌘K)
         </span>

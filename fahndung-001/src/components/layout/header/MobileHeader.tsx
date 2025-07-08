@@ -26,7 +26,7 @@ export function MobileHeader({ onMenuToggle }: MobileHeaderProps) {
 
         {/* Mobile Controls */}
         <div className="flex items-center gap-3">
-          <SearchModal />
+          <SearchModal size="compact" />
           <UserAuth variant="mobile" size="compact" />
           <ThemeToggle />
           <A11nav />
