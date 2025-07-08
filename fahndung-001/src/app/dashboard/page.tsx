@@ -1,11 +1,41 @@
-import { auth } from "~/server/auth";
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function DashboardPage() {
-  const session = await auth();
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-  if (!session) {
-    redirect("/login");
+export default function DashboardPage() {
+  const router = useRouter();
+  const [userName, setUserName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Prüfe Demo-Session
+    const demoSession = localStorage.getItem("demo-session");
+    if (!demoSession) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const sessionData = JSON.parse(demoSession) as { userName?: string };
+      setUserName(sessionData.userName ?? "Demo User");
+    } catch {
+      router.push("/login");
+      return;
+    }
+
+    setIsLoading(false);
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Lade Dashboard...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -15,7 +45,7 @@ export default async function DashboardPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="mt-2 text-gray-600">
-            Willkommen zurück, {session.user?.name}
+            Willkommen zurück, {userName}
           </p>
         </div>
 

@@ -1,12 +1,27 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
-  const { data: session } = useSession();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    // Prüfe, ob Benutzer eingeloggt ist (Demo-Session)
+    const demoSession = localStorage.getItem("demo-session");
+    if (demoSession) {
+      try {
+        const sessionData = JSON.parse(demoSession) as { userName?: string };
+        setIsLoggedIn(true);
+        setUserName(sessionData.userName ?? "Demo User");
+      } catch {
+        // Bei ungültigem JSON zurücksetzen
+        localStorage.removeItem("demo-session");
+      }
+    }
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,32 +85,37 @@ export default function Header() {
 
           {/* Auth Section */}
           <div className="flex items-center space-x-4">
-            {session ? (
+            {isLoggedIn ? (
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-700">
                     <span className="text-sm font-medium text-white">
-                      {session.user?.name?.[0] ?? "U"}
+                      {userName[0] ?? "U"}
                     </span>
                   </div>
                   <span className="hidden text-sm sm:block">
-                    {session.user?.name}
+                    {userName}
                   </span>
                 </div>
                 <button
-                  onClick={() => signOut()}
+                  onClick={() => {
+                    localStorage.removeItem("demo-session");
+                    setIsLoggedIn(false);
+                    setUserName("");
+                    window.location.href = "/";
+                  }}
                   className="rounded-lg bg-red-600 px-4 py-2 text-sm transition-colors hover:bg-red-700"
                 >
                   Abmelden
                 </button>
               </div>
             ) : (
-              <button
-                onClick={() => signIn()}
+              <Link
+                href="/login"
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm transition-colors hover:bg-blue-700"
               >
                 Anmelden
-              </button>
+              </Link>
             )}
           </div>
         </div>
