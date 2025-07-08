@@ -29,7 +29,7 @@ export default function RootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body>
+      <body suppressHydrationWarning={true}>
         <ThemeProvider defaultTheme="system" storageKey="theme">
           <TRPCReactProvider>
             <SessionProvider>

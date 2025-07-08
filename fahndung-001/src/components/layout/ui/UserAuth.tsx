@@ -22,10 +22,12 @@ export default function UserAuth({
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userImage, setUserImage] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState<'bottom' | 'top'>('bottom');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
   const firstMenuItemRef = useRef<HTMLAnchorElement>(null);
   const closeTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [dropdownCoords, setDropdownCoords] = useState<{ left: number; top: number } | null>(null);
 
   useEffect(() => {
     const demoSession = localStorage.getItem("demo-session");
@@ -92,6 +94,14 @@ export default function UserAuth({
     return () => document.removeEventListener("keydown", handleKey);
   }, [dropdownOpen]);
 
+  // Dropdown beim Scrollen schließen (nur mobile)
+  useEffect(() => {
+    if (!dropdownOpen || variant !== 'mobile') return;
+    const handleScroll = () => setDropdownOpen(false);
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [dropdownOpen, variant]);
+
   const handleLogout = () => {
     localStorage.removeItem("demo-session");
     setIsLoggedIn(false);
@@ -126,56 +136,74 @@ export default function UserAuth({
   // EINGELOGGT: Avatar/Initialen + Dropdown
   return (
     <div
-      className={`flex items-center space-x-2 relative ${className}`}
+      className={`flex items-center relative ${className}`}
       ref={dropdownRef}
-      onMouseEnter={() => {
+      // Für mobile Geräte: nur per Klick öffnen/schließen, kein Hover
+      onMouseEnter={variant === 'desktop' ? () => {
         if (closeTimeout.current) clearTimeout(closeTimeout.current);
         setDropdownOpen(true);
-      }}
-      onMouseLeave={() => {
+      } : undefined}
+      onMouseLeave={variant === 'desktop' ? () => {
         closeTimeout.current = setTimeout(() => setDropdownOpen(false), 200);
-      }}
+      } : undefined}
     >
       {/* Avatar oder Initialen */}
-      <button
-        ref={avatarButtonRef}
-        className={`flex items-center justify-center rounded-full bg-blue-700 text-white font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition-all ${avatarSizeClasses[size]} ${avatarBorder}`}
-        tabIndex={0}
-        aria-label="Benutzermenü öffnen"
-        aria-haspopup="true"
-        aria-expanded={dropdownOpen}
-        onClick={() => setDropdownOpen((open) => !open)}
-        onKeyDown={e => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            setDropdownOpen((open) => !open);
-            setTimeout(() => firstMenuItemRef.current?.focus(), 0);
-          }
-        }}
-      >
-        {userImage ? (
-          <img src={userImage} alt="Profilbild" className="rounded-full object-cover w-full h-full" />
-        ) : (
-          <span>D</span>
-        )}
-      </button>
+      <div className="flex-shrink-0">
+        <button
+          ref={avatarButtonRef}
+          className={`flex items-center justify-center rounded-full bg-blue-700 text-white font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-inset ${avatarSizeClasses[size]} ${avatarBorder} transform-none`}
+          tabIndex={0}
+          aria-label="Benutzermenü öffnen"
+          aria-haspopup="true"
+          aria-expanded={dropdownOpen}
+          onClick={() => setDropdownOpen((open) => !open)}
+          onKeyDown={e => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setDropdownOpen((open) => !open);
+              setTimeout(() => firstMenuItemRef.current?.focus(), 0);
+            }
+          }}
+        >
+          {userImage ? (
+            <img src={userImage} alt="Profilbild" className="rounded-full object-cover w-full h-full" />
+          ) : (
+            <span>D</span>
+          )}
+        </button>
+      </div>
       {/* Dropdown-Menü */}
       {dropdownOpen && (
         <div
-          className="absolute right-0 top-10 z-20 min-w-[260px] rounded-xl bg-white dark:bg-gray-900 py-2 shadow-2xl border border-gray-200 dark:border-gray-700 animate-fade-in focus:outline-none"
+          className={
+            variant === 'mobile'
+              ? 'fixed top-16 left-1/2 -translate-x-1/2 w-[95vw] max-w-sm min-w-0 max-h-[70vh] overflow-y-auto z-20 rounded-xl bg-white dark:bg-gray-900 py-2 shadow-2xl border border-gray-200 dark:border-gray-700 animate-fade-in focus:outline-none px-1'
+              : 'absolute right-0 top-10 z-20 min-w-[260px] rounded-xl bg-white dark:bg-gray-900 py-2 shadow-2xl border border-gray-200 dark:border-gray-700 animate-fade-in focus:outline-none'
+          }
           role="menu"
-          onMouseEnter={() => {
+          onMouseEnter={variant === 'desktop' ? () => {
             if (closeTimeout.current) clearTimeout(closeTimeout.current);
             setDropdownOpen(true);
-          }}
-          onMouseLeave={() => {
+          } : undefined}
+          onMouseLeave={variant === 'desktop' ? () => {
             closeTimeout.current = setTimeout(() => setDropdownOpen(false), 200);
-          }}
+          } : undefined}
         >
+          {/* Dashboard - NEUE OPTION */}
+          <Link
+            href="/dashboard"
+            ref={firstMenuItemRef}
+            className="flex flex-col gap-0.5 px-4 py-2 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-blue-50 dark:focus:bg-blue-900/30 outline-none"
+            tabIndex={0}
+            role="menuitem"
+          >
+            <span className="flex items-center gap-2 font-medium"><span>📊</span> Dashboard</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 ml-6">Übersicht & Statistiken</span>
+          </Link>
+          
           {/* Neue Fahndung */}
           <Link
             href="/fahndung/erstellen"
-            ref={firstMenuItemRef}
             className="flex flex-col gap-0.5 px-4 py-2 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-blue-50 dark:focus:bg-blue-900/30 outline-none"
             tabIndex={0}
             role="menuitem"
