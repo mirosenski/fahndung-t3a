@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+
 // importiere ggf. deine API und Komponenten
 // import { api } from '@/lib/api';
 // import FahndungList from '@/components/fahndung/FahndungList';
@@ -12,14 +12,15 @@ interface SearchParams {
   page?: string;
 }
 
-export default async function FahndungPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function FahndungPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const params = await searchParams;
   const filters = {
-    query: searchParams.q ?? '',
-    category: searchParams.cat ?? 'all',
-    region: searchParams.region ?? 'Alle Regionen',
-    dateFrom: searchParams.from,
-    dateTo: searchParams.to,
-    page: Number(searchParams.page) || 1,
+    query: params.q ?? '',
+    category: params.cat ?? 'all',
+    region: params.region ?? 'Alle Regionen',
+    dateFrom: params.from,
+    dateTo: params.to,
+    page: Number(params.page) || 1,
   };
 
   // Beispiel: Ergebnisse holen (hier als Platzhalter)

@@ -105,6 +105,7 @@ export function SearchModal({ className = "" }: SearchModalProps) {
   }, [isOpen]);
 
   const handleSearch = () => {
+    setIsSearching(true);
     const params = new URLSearchParams({
       ...(query && { q: query }),
       ...(selectedCategory !== 'all' && { cat: selectedCategory }),
