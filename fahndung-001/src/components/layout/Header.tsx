@@ -7,6 +7,7 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     // Prüfe, ob Benutzer eingeloggt ist (Demo-Session)
@@ -86,8 +87,19 @@ export default function Header() {
           {/* Auth Section */}
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
+              <div
+                className="flex items-center space-x-3 relative"
+                onMouseEnter={() => setDropdownOpen(true)}
+                onMouseLeave={() => setDropdownOpen(false)}
+              >
+                {/* Avatar und Name als Dropdown-Trigger */}
+                <button
+                  className="flex items-center space-x-2 focus:outline-none"
+                  tabIndex={0}
+                  onClick={() => setDropdownOpen((open) => !open)}
+                  aria-haspopup="true"
+                  aria-expanded={dropdownOpen}
+                >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-700">
                     <span className="text-sm font-medium text-white">
                       {userName[0] ?? "U"}
@@ -96,7 +108,55 @@ export default function Header() {
                   <span className="hidden text-sm sm:block">
                     {userName}
                   </span>
-                </div>
+                  <svg className="ml-1 h-4 w-4 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                {/* Dropdown-Menü */}
+                {dropdownOpen && (
+                  <div
+                    className="absolute right-0 top-10 z-10 min-w-[220px] rounded-lg bg-white py-2 shadow-lg border border-blue-100 animate-fade-in"
+                    onMouseEnter={() => setDropdownOpen(true)}
+                    onMouseLeave={() => setDropdownOpen(false)}
+                  >
+                    <Link
+                      href="/fahndung/erstellen"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-blue-900 hover:bg-blue-50"
+                    >
+                      <span>➕</span> Neue Fahndung
+                    </Link>
+                    <Link
+                      href="/fahndung/meine"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-blue-900 hover:bg-blue-50"
+                    >
+                      <span>🗂️</span> Meine Fahndungen
+                    </Link>
+                    <div className="border-t my-2 border-blue-100" />
+                    <Link
+                      href="/hilfe"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-blue-900 hover:bg-blue-50"
+                    >
+                      <span>❓</span> Hilfe
+                    </Link>
+                    <Link
+                      href="/hilfe/faq"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-blue-900 hover:bg-blue-50"
+                    >
+                      <span>❓</span> FAQ & Support
+                    </Link>
+                    <div className="border-t my-2 border-blue-100" />
+                    <Link
+                      href="/profil/einstellungen"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-blue-900 hover:bg-blue-50"
+                    >
+                      <span>⚙️</span> Einstellungen
+                    </Link>
+                    <Link
+                      href="/profil"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-blue-900 hover:bg-blue-50"
+                    >
+                      <span>👤</span> Profil verwalten
+                    </Link>
+                  </div>
+                )}
                 <button
                   onClick={() => {
                     localStorage.removeItem("demo-session");
@@ -104,7 +164,7 @@ export default function Header() {
                     setUserName("");
                     window.location.href = "/";
                   }}
-                  className="rounded-lg bg-red-600 px-4 py-2 text-sm transition-colors hover:bg-red-700"
+                  className="rounded-lg bg-red-600 px-4 py-2 text-sm transition-colors hover:bg-red-700 ml-2"
                 >
                   Abmelden
                 </button>
