@@ -5,6 +5,7 @@ import Logo from '../ui/Logo';
 import ThemeToggle from '../ui/ThemeToggle';
 import A11nav from '../ui/a11nav';
 import UserAuth from '../ui/UserAuth';
+import { SearchModal } from './SearchModal';
 
 interface MobileHeaderProps {
   onMenuToggle: () => void;
@@ -25,6 +26,7 @@ export function MobileHeader({ onMenuToggle }: MobileHeaderProps) {
 
         {/* Mobile Controls */}
         <div className="flex items-center gap-3">
+          <SearchModal />
           <UserAuth variant="mobile" size="compact" />
           <ThemeToggle />
           <A11nav />

@@ -6,7 +6,7 @@ import ThemeToggle from '../ui/ThemeToggle';
 import A11nav from '../ui/a11nav';
 import UserAuth from '../ui/UserAuth';
 import { HoverMegaMenu } from './HoverMegaMenu';
-import { SearchBar } from './SearchBar';
+import { SearchModal } from './SearchModal';
 
 interface DesktopHeaderProps {
   isScrolled: boolean;
@@ -42,10 +42,7 @@ export default function DesktopHeader({ isScrolled }: DesktopHeaderProps) {
           
           {/* Right Actions */}
           <div className="flex items-center gap-3 ml-6">
-            <SearchBar 
-              variant="desktop" 
-              size={isScrolled ? 'compact' : 'default'} 
-            />
+            <SearchModal />
             <UserAuth variant="desktop" size={isScrolled ? 'compact' : 'default'} />
             <ThemeToggle />
             <A11nav />
