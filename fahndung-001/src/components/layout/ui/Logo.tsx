@@ -2,6 +2,7 @@
 
 import React, { useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface LogoProps {
   size?: "sm" | "md" | "lg" | "xl";  // Standard: "md"
@@ -105,9 +106,11 @@ export default function Logo({
         <div className="absolute inset-0 rounded-full bg-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
         
         {/* Logo Image */}
-        <img 
+        <Image 
           src={imageSrc}
           alt={imageAlt}
+          width={64}
+          height={64}
           className={`relative ${containerSizeClasses[size]} transition-all duration-300 ease-out transform-gpu ${transformScale[size]} object-contain`}
         />
       </div>
