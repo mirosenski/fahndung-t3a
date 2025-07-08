@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
   return (
@@ -44,37 +45,30 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Side - Featured Fahndung Card */}
-          <div className="rounded-xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="rounded-full bg-red-600 px-3 py-1 text-sm font-medium text-white">
-                  AKTIV
-                </span>
-                <span className="text-sm text-blue-200">vor 2 Stunden</span>
-              </div>
-
-              <h3 className="text-2xl font-bold text-white">
-                Vermisste Person gesucht
-              </h3>
-
-              <p className="text-blue-100">
-                Wir suchen nach einer vermissten Person im Raum Stuttgart.
-                Letzte Sichtung am Hauptbahnhof.
-              </p>
-
-              <div className="flex items-center space-x-4 text-sm text-blue-200">
-                <span>📍 Stuttgart</span>
-                <span>👤 25 Jahre</span>
-                <span>📅 15.12.2024</span>
-              </div>
-
-              <Link
-                href="/fahndung/1"
-                className="block w-full rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white transition-colors hover:bg-blue-700"
-              >
-                Details anzeigen
-              </Link>
+          {/* Right Side - Hero Images */}
+          <div className="relative">
+            {/* Desktop Hero Image */}
+            <div className="hidden md:block">
+              <Image
+                src="/images/hero-desktop.png"
+                width={1000}
+                height={760}
+                alt="Fahndungsportal Desktop-Version - Polizei Baden-Württemberg"
+                className="rounded-xl shadow-2xl"
+                priority
+              />
+            </div>
+            
+            {/* Mobile Hero Image */}
+            <div className="md:hidden">
+              <Image
+                src="/images/hero-mobile.png"
+                width={560}
+                height={620}
+                alt="Fahndungsportal Mobile-Version - Polizei Baden-Württemberg"
+                className="rounded-xl shadow-2xl"
+                priority
+              />
             </div>
           </div>
         </div>
