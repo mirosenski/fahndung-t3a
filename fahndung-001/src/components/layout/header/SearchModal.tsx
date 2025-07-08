@@ -6,6 +6,7 @@ import {
   AlertCircle, Users, UserX, Skull, Package, Filter, Clock,
   Shield, ChevronDown, Info, Siren
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // Fahndungskategorien
 const categories = [
@@ -53,6 +54,7 @@ export function SearchModal({ className = "" }: SearchModalProps) {
   const [dateRange, setDateRange] = useState({ from: '', to: '' });
   const searchInputRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
 
   // Focus management
   useEffect(() => {
@@ -102,17 +104,17 @@ export function SearchModal({ className = "" }: SearchModalProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const handleSearch = async () => {
-    if (!query.trim() && selectedCategory === 'all') return;
-    
-    setIsSearching(true);
-    
-    // Simulate search
-    setTimeout(() => {
-      console.log('Searching:', { query, selectedCategory, selectedRegion, dateRange });
-      setIsSearching(false);
-      handleClose();
-    }, 1000);
+  const handleSearch = () => {
+    const params = new URLSearchParams({
+      ...(query && { q: query }),
+      ...(selectedCategory !== 'all' && { cat: selectedCategory }),
+      ...(selectedRegion !== 'Alle Regionen' && { region: selectedRegion }),
+      ...(dateRange.from && { from: dateRange.from }),
+      ...(dateRange.to && { to: dateRange.to }),
+      page: '1',
+    });
+    router.push(`/fahndungen?${params.toString()}`);
+    handleClose();
   };
 
   const handleClose = () => {
@@ -260,18 +262,34 @@ export function SearchModal({ className = "" }: SearchModalProps) {
                 focus-within:border-blue-500 dark:focus-within:border-blue-400
                 transition-colors
               ">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`
+                    flex items-center gap-1 px-1.5 py-1 rounded-lg
+                    text-xs font-medium
+                    bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300
+                    hover:bg-blue-100 dark:hover:bg-blue-900/30
+                    transition-colors
+                    sm:gap-2 sm:px-3 sm:py-1.5 sm:text-sm
+                  `}
+                  aria-label="Filter anzeigen"
+                  aria-expanded={showFilters}
+                >
+                  <Filter className="w-4 h-4" />
+                  <span className="hidden sm:inline">Filter</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+                </button>
                 <Search className={`
                   w-5 h-5 text-gray-500
                   ${isSearching ? 'animate-pulse' : ''}
                 `} />
-                
                 <input
                   ref={searchInputRef}
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                  placeholder="Suche nach Namen, Ort, Fallnummer oder Beschreibung..."
+                  placeholder="Suche..."
                   className="
                     flex-1 bg-transparent outline-none
                     text-lg text-gray-900 dark:text-white
@@ -281,30 +299,9 @@ export function SearchModal({ className = "" }: SearchModalProps) {
                   autoComplete="off"
                   spellCheck="false"
                 />
-
                 {isSearching && (
                   <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
                 )}
-
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className={`
-                    flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg
-                    text-xs sm:text-sm font-medium
-                    ${showFilters 
-                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' 
-                      : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-                    }
-                    hover:bg-blue-100 dark:hover:bg-blue-900/30
-                    transition-colors
-                  `}
-                  aria-label="Filter anzeigen"
-                  aria-expanded={showFilters}
-                >
-                  <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline">Filter</span>
-                  <ChevronDown className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-                </button>
               </div>
 
               {/* Advanced Filters */}
