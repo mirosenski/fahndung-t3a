@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useCallback } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface SearchBarProps {
   variant?: 'desktop' | 'mobile';
@@ -37,21 +38,31 @@ export function SearchBar({
     return 'w-52';
   };
 
+  // Debounced search function
+  const debouncedSearch = useDebouncedCallback((term: string) => {
+    if (term.trim()) {
+      const searchUrl = `/suche?q=${encodeURIComponent(term.trim())}`;
+      window.location.href = searchUrl;
+    }
+  }, 500);
+
   // Handle Input Change
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = e.target.value;
     setQuery(newQuery);
     onSearch?.(newQuery);
-  }, [onSearch]);
+    
+    // Trigger debounced search
+    debouncedSearch(newQuery);
+  }, [onSearch, debouncedSearch]);
 
   // Handle Form Submit
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      // TODO: Implement search functionality
-      console.log("Searching for:", query);
-      // Hier könnte die Suchlogik implementiert werden
-      // z.B. Navigation zu /fahndung?q=query
+      // Navigation zur Suchseite mit Query-Parameter
+      const searchUrl = `/suche?q=${encodeURIComponent(query.trim())}`;
+      window.location.href = searchUrl;
     }
   }, [query]);
 
