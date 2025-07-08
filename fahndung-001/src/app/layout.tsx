@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="de" className={`${geist.variable}`}>
-      <body>
+      <body suppressHydrationWarning={true}>
         <TRPCReactProvider>
           <SessionProvider>
             <div className="flex min-h-screen flex-col">
