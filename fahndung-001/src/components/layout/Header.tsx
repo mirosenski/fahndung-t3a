@@ -87,18 +87,14 @@ export default function Header() {
           {/* Auth Section */}
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
-              <div
-                className="flex items-center space-x-3 relative"
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
-              >
-                {/* Avatar und Name als Dropdown-Trigger */}
-                <button
-                  className="flex items-center space-x-2 focus:outline-none"
+              <div className="flex items-center space-x-3 relative">
+                {/* Avatar+Name als Link zum Dashboard */}
+                <Link
+                  href="/dashboard"
+                  className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 rounded-lg"
                   tabIndex={0}
-                  onClick={() => setDropdownOpen((open) => !open)}
-                  aria-haspopup="true"
-                  aria-expanded={dropdownOpen}
+                  aria-label="Zum Dashboard"
+                  role="link"
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-700">
                     <span className="text-sm font-medium text-white">
@@ -108,7 +104,23 @@ export default function Header() {
                   <span className="hidden text-sm sm:block">
                     {userName}
                   </span>
-                  <svg className="ml-1 h-4 w-4 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </Link>
+                {/* Chevron als eigener Button für Dropdown */}
+                <button
+                  className="ml-1 h-8 w-8 flex items-center justify-center focus:outline-none"
+                  tabIndex={0}
+                  aria-haspopup="true"
+                  aria-expanded={dropdownOpen}
+                  aria-label="Menü öffnen"
+                  onClick={() => setDropdownOpen((open) => !open)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setDropdownOpen((open) => !open);
+                    }
+                  }}
+                >
+                  <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                 </button>
                 {/* Dropdown-Menü */}
                 {dropdownOpen && (

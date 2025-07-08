@@ -102,7 +102,7 @@ export default function DashboardPage() {
             </h2>
           </div>
           <div className="p-6">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
               <a
                 href="/fahndung/erstellen"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
@@ -115,10 +115,10 @@ export default function DashboardPage() {
               </a>
 
               <a
-                href="/meine-fahndungen"
+                href="/fahndung/meine"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
-                <span className="mr-3 text-2xl">📋</span>
+                <span className="mr-3 text-2xl">🗂️</span>
                 <div>
                   <p className="font-medium text-gray-900">Meine Fahndungen</p>
                   <p className="text-sm text-gray-600">Übersicht anzeigen</p>
@@ -137,13 +137,24 @@ export default function DashboardPage() {
               </a>
 
               <a
-                href="/settings"
+                href="/profil/einstellungen"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
                 <span className="mr-3 text-2xl">⚙️</span>
                 <div>
                   <p className="font-medium text-gray-900">Einstellungen</p>
                   <p className="text-sm text-gray-600">Profil verwalten</p>
+                </div>
+              </a>
+
+              <a
+                href="/profil"
+                className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
+              >
+                <span className="mr-3 text-2xl">👤</span>
+                <div>
+                  <p className="font-medium text-gray-900">Profil verwalten</p>
+                  <p className="text-sm text-gray-600">Persönliche Daten</p>
                 </div>
               </a>
             </div>
