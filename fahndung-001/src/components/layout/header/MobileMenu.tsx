@@ -2,10 +2,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
-import A11nav from '../ui/a11nav';
 import { SearchBar } from './SearchBar';
 import { navigationData } from '../../constants/navigationData';
 import type { MenuSection } from '../../types/header';
+import A11accessDropdown from '../ui/A11accessDropdown';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -94,7 +94,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <A11nav />
+            <A11accessDropdown />
             <button
               ref={firstFocusableRef}
               onClick={onClose}
@@ -107,11 +107,6 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               </svg>
             </button>
           </div>
-        </div>
-
-        {/* Search */}
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-          <SearchBar variant="mobile" />
         </div>
 
         {/* Menu Sections */}

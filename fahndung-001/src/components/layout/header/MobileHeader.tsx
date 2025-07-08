@@ -28,8 +28,6 @@ export function MobileHeader({ onMenuToggle }: MobileHeaderProps) {
         <div className="flex items-center gap-3">
           <SearchModal size="compact" />
           <UserAuth variant="mobile" size="compact" />
-          <ThemeToggle />
-          <A11nav />
           
           {/* Hamburger Menu Button */}
           <button
