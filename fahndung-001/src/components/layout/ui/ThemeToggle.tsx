@@ -1,142 +1,148 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
 /**
- * ThemeToggle Component
- * Eleganter Dark/Light Mode Toggle mit Glassmorphism Design
- * WCAG 2.2 AAA konform
+ * ThemeToggle Component - Einfacher Light/Dark Toggle
+ * Nur Sonne/Mond - kein System-Support
+ * WCAG 2.2 AAA konform mit smooth Animations
  */
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
+  // Theme initialisieren - System-aware
   useEffect(() => {
-    // Prüfe initiale Theme-Einstellung
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setMounted(true);
     
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
+    // System-Preference Observer
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches;
+        setIsDark(newTheme);
+        document.documentElement.classList.toggle('dark', newTheme);
+      }
+    };
+    
+    // Initial Theme Setup
+    const savedTheme = localStorage.getItem('theme');
+    const systemDark = mediaQuery.matches;
+    
+    let currentTheme: boolean;
+    if (savedTheme) {
+      currentTheme = savedTheme === 'dark';
     } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
+      currentTheme = systemDark;
     }
+    
+    setIsDark(currentTheme);
+    document.documentElement.classList.toggle('dark', currentTheme);
+    
+    // System Theme Listener
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    };
   }, []);
 
-  const toggleTheme = () => {
+  // Theme umschalten
+  const toggleTheme = useCallback(() => {
     const newTheme = !isDark;
     setIsDark(newTheme);
     
-    if (newTheme) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    // DOM Update mit Transition
+    const root = document.documentElement;
+    root.style.transition = 'color-scheme 0.3s ease, background-color 0.3s ease';
+    root.classList.toggle('dark', newTheme);
+    
+    // localStorage Update
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    
+    // Accessibility
+    const message = newTheme ? 'Dunkles Theme aktiviert' : 'Helles Theme aktiviert';
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+    setTimeout(() => document.body.removeChild(announcement), 1000);
+    
+    // Transition Cleanup
+    setTimeout(() => {
+      root.style.transition = '';
+    }, 300);
+  }, [isDark]);
+
+  // Keyboard Support
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleTheme();
     }
-  };
+  }, [toggleTheme]);
+
+  // Hydration Protection
+  if (!mounted) {
+    return (
+      <button 
+        className="inline-flex items-center justify-center p-2 rounded-lg text-muted-foreground transition-colors duration-200"
+        aria-label="Theme wird geladen..."
+        disabled
+      >
+        <SunIcon className="w-5 h-5" />
+      </button>
+    );
+  }
 
   return (
     <button
       onClick={toggleTheme}
-      className="relative group"
-      aria-label={isDark ? "Zu hellem Modus wechseln" : "Zu dunklem Modus wechseln"}
-      role="switch"
-      aria-checked={isDark}
+      onKeyDown={handleKeyDown}
+      className="group relative inline-flex items-center justify-center p-2 rounded-lg text-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-4 focus:ring-primary/30 focus:ring-offset-2 focus:ring-offset-background transition-all duration-300 ease-out hover:scale-110 active:scale-95"
+      aria-label={`Zu ${isDark ? 'hellem' : 'dunklem'} Theme wechseln`}
+      aria-pressed={isDark}
+      type="button"
     >
-      <div className="relative w-[72px] h-[36px] rounded-full 
-        bg-gradient-to-r from-blue-100/80 to-purple-100/80 
-        dark:from-blue-900/40 dark:to-purple-900/40
-        backdrop-blur-xl border border-white/30 dark:border-white/10
-        shadow-inner shadow-black/10 dark:shadow-black/30
-        overflow-hidden transition-all duration-500 ease-out
-        hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20 dark:hover:shadow-blue-500/20"
-      >
-        {/* Sliding Background */}
-        <div className={`absolute inset-0 transition-all duration-700 ease-out
-          ${isDark 
-            ? 'bg-gradient-to-br from-indigo-600/30 via-purple-600/20 to-pink-600/30' 
-            : 'bg-gradient-to-br from-yellow-400/30 via-orange-400/20 to-pink-400/30'
-          }`} 
-        />
-        
-        {/* Toggle Circle */}
-        <div className={`absolute top-[3px] w-[30px] h-[30px] 
-          bg-white dark:bg-gray-900
-          rounded-full shadow-lg shadow-black/20
-          transition-all duration-500 ease-[cubic-bezier(0.68,-0.55,0.265,1.55)]
-          flex items-center justify-center
-          ${isDark ? 'translate-x-[39px] rotate-[360deg]' : 'translate-x-[3px] rotate-0'}`}
-        >
-          {/* Icons */}
-          <div className="relative w-5 h-5">
-            {/* Sun Icon */}
-            <svg 
-              className={`absolute inset-0 w-5 h-5 transition-all duration-500
-                ${isDark ? 'opacity-0 rotate-180 scale-0' : 'opacity-100 rotate-0 scale-100'}`}
-              fill="none" 
-              viewBox="0 0 24 24"
-            >
-              <circle cx="12" cy="12" r="5" fill="#FFA500" />
-              <g stroke="#FFA500" strokeWidth="2" strokeLinecap="round">
-                <line x1="12" y1="2" x2="12" y2="5" />
-                <line x1="12" y1="19" x2="12" y2="22" />
-                <line x1="2" y1="12" x2="5" y2="12" />
-                <line x1="19" y1="12" x2="22" y2="12" />
-                <line x1="5.64" y1="5.64" x2="7.76" y2="7.76" />
-                <line x1="16.24" y1="16.24" x2="18.36" y2="18.36" />
-                <line x1="5.64" y1="18.36" x2="7.76" y2="16.24" />
-                <line x1="16.24" y1="7.76" x2="18.36" y2="5.64" />
-              </g>
-            </svg>
-            
-            {/* Moon Icon */}
-            <svg 
-              className={`absolute inset-0 w-5 h-5 transition-all duration-500
-                ${isDark ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-180 scale-0'}`}
-              fill="none" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" 
-                className="fill-indigo-400 stroke-indigo-500"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-        
-        {/* Ambient Light Effect - Sun */}
-        <div className={`absolute w-full h-full transition-opacity duration-700
-          ${isDark ? 'opacity-0' : 'opacity-100'}`}
-        >
-          <div className="absolute top-1/2 left-[18px] -translate-x-1/2 -translate-y-1/2
-            w-8 h-8 bg-yellow-300/30 rounded-full blur-xl animate-pulse" />
-        </div>
-        
-        {/* Ambient Light Effect - Moon */}
-        <div className={`absolute w-full h-full transition-opacity duration-700
-          ${isDark ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <div className="absolute top-1/2 right-[18px] translate-x-1/2 -translate-y-1/2
-            w-8 h-8 bg-indigo-400/30 rounded-full blur-xl animate-pulse" />
-        </div>
-      </div>
+      {/* Sonne - Light Mode */}
+      <SunIcon 
+        className={`w-5 h-5 transition-all duration-500 ease-out absolute inset-0 m-auto ${
+          isDark 
+            ? "rotate-90 scale-0 opacity-0" 
+            : "rotate-0 scale-100 opacity-100 group-hover:rotate-180"
+        }`}
+        aria-hidden="true"
+      />
       
-      {/* Hover Tooltip */}
-      <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 
-        px-3 py-1.5 text-xs font-medium
-        bg-gray-900/90 dark:bg-white/90 
-        text-white dark:text-gray-900
-        rounded-full opacity-0 group-hover:opacity-100
-        transition-all duration-300 pointer-events-none
-        whitespace-nowrap backdrop-blur-xl"
-      >
-        {isDark ? 'Hell' : 'Dunkel'}
+      {/* Mond - Dark Mode */}
+      <MoonIcon 
+        className={`w-5 h-5 transition-all duration-500 ease-out absolute inset-0 m-auto ${
+          isDark 
+            ? "rotate-0 scale-100 opacity-100 group-hover:-rotate-12" 
+            : "-rotate-90 scale-0 opacity-0"
+        }`}
+        aria-hidden="true"
+      />
+      
+      {/* Spacer für Button-Dimensionen */}
+      <div className="w-5 h-5 opacity-0" aria-hidden="true" />
+      
+      {/* Screen Reader Status */}
+      <span className="sr-only">
+        {isDark ? 'Dunkles Theme aktiv' : 'Helles Theme aktiv'}
       </span>
+      
+      {/* Glow Effect */}
+      <div 
+        className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+          isDark ? "bg-blue-500/10" : "bg-yellow-500/10"
+        }`}
+        aria-hidden="true"
+      />
     </button>
   );
 } 
