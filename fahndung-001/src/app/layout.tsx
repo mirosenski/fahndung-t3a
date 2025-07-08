@@ -5,6 +5,8 @@ import { Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "~/components/providers/ThemeProvider";
+import { ThemeScript } from "~/components/providers/ThemeScript";
 import Header from "~/components/layout/header/Header";
 import Footer from "~/components/layout/Footer";
 
@@ -24,16 +26,21 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="de" className={`${geist.variable}`}>
+      <head>
+        <ThemeScript />
+      </head>
       <body suppressHydrationWarning={true}>
-        <TRPCReactProvider>
-          <SessionProvider>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main id="main-content" className="flex-1 pt-32 lg:pt-36">{children}</main>
-              <Footer />
-            </div>
-          </SessionProvider>
-        </TRPCReactProvider>
+        <ThemeProvider defaultTheme="system" storageKey="theme">
+          <TRPCReactProvider>
+            <SessionProvider>
+              <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+                <Header />
+                <main id="main-content" className="flex-1 pt-32 lg:pt-36">{children}</main>
+                <Footer />
+              </div>
+            </SessionProvider>
+          </TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
