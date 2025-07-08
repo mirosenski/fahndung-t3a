@@ -34,7 +34,8 @@ export default function LoginPage() {
         loginTime: new Date().toISOString(),
       };
       localStorage.setItem("demo-session", JSON.stringify(sessionData));
-      
+      window.dispatchEvent(new Event('storage'));
+      window.dispatchEvent(new Event('demo-session-changed'));
       // Erfolgreiche Anmeldung - Weiterleitung zum Dashboard
       router.push("/dashboard");
     } else {
