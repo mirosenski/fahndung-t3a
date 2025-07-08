@@ -5,7 +5,7 @@ import { Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { SessionProvider } from "next-auth/react";
-import Header from "~/components/layout/Header";
+import Header from "~/components/layout/header/Header";
 import Footer from "~/components/layout/Footer";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({
           <SessionProvider>
             <div className="flex min-h-screen flex-col">
               <Header />
-              <main className="flex-1">{children}</main>
+              <main id="main-content" className="flex-1 pt-32 lg:pt-36">{children}</main>
               <Footer />
             </div>
           </SessionProvider>

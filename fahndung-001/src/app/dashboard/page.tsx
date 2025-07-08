@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -103,7 +104,7 @@ export default function DashboardPage() {
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
-              <a
+              <Link
                 href="/fahndung/erstellen"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -112,9 +113,9 @@ export default function DashboardPage() {
                   <p className="font-medium text-gray-900">Neue Fahndung</p>
                   <p className="text-sm text-gray-600">Fahndung erstellen</p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/fahndung/meine"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -123,9 +124,9 @@ export default function DashboardPage() {
                   <p className="font-medium text-gray-900">Meine Fahndungen</p>
                   <p className="text-sm text-gray-600">Übersicht anzeigen</p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/hilfe"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -134,9 +135,9 @@ export default function DashboardPage() {
                   <p className="font-medium text-gray-900">Hilfe</p>
                   <p className="text-sm text-gray-600">FAQ & Support</p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/profil/einstellungen"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -145,9 +146,9 @@ export default function DashboardPage() {
                   <p className="font-medium text-gray-900">Einstellungen</p>
                   <p className="text-sm text-gray-600">Profil verwalten</p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/profil"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -156,7 +157,7 @@ export default function DashboardPage() {
                   <p className="font-medium text-gray-900">Profil verwalten</p>
                   <p className="text-sm text-gray-600">Persönliche Daten</p>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
