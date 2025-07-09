@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HilfePage() {
   const faqs = [
     {
@@ -132,7 +134,7 @@ export default function HilfePage() {
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              <a
+              <Link
                 href="/impressum"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -143,9 +145,9 @@ export default function HilfePage() {
                     Rechtliche Informationen
                   </p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/datenschutz"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -154,7 +156,7 @@ export default function HilfePage() {
                   <p className="font-medium text-gray-900">Datenschutz</p>
                   <p className="text-sm text-gray-600">Datenschutzerklärung</p>
                 </div>
-              </a>
+              </Link>
 
               <a
                 href="https://polizei.baden-wuerttemberg.de"

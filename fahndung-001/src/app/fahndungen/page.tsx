@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 // importiere ggf. deine API und Komponenten
 // import { api } from '@/lib/api';
@@ -42,9 +43,9 @@ export default async function FahndungPage({ searchParams }: { searchParams: Pro
       <ul className="space-y-4">
         {results.map(result => (
           <li key={result.id}>
-            <a href={`/fahndung/${result.id}`} className="text-blue-600 underline hover:text-blue-800">
+            <Link href={`/fahndung/${result.id}`} className="text-blue-600 underline hover:text-blue-800">
               {result.title}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

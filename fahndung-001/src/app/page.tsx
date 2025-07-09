@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Hero from "~/components/layout/Hero";
 import FahndungList from "~/components/fahndung/FahndungList";
 import SearchBar from "~/components/filter/SearchBar";
@@ -130,18 +131,18 @@ export default function HomePage() {
             Ihre Informationen können bei der Aufklärung von Straftaten helfen.
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <a
+            <Link
               href="/hilfe"
               className="rounded-lg bg-white px-8 py-3 font-semibold text-blue-900 transition-colors hover:bg-blue-50"
             >
               Wie kann ich helfen?
-            </a>
-            <a
+            </Link>
+            <Link
               href="/dashboard"
               className="rounded-lg border-2 border-white px-8 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-blue-900"
             >
               Zum Dashboard
-            </a>
+            </Link>
           </div>
         </div>
       </section>

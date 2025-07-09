@@ -59,9 +59,10 @@ const currentAlerts = [
 
 interface SearchModalProps {
   className?: string;
+  size?: 'compact' | 'default';
 }
 
-export function SearchModal({ className = "" }: SearchModalProps) {
+export function SearchModal({ className = "", size = "default" }: SearchModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -146,7 +147,8 @@ export function SearchModal({ className = "" }: SearchModalProps) {
         ref={triggerRef}
         onClick={() => setIsOpen(true)}
         className={cn(
-          "inline-flex items-center justify-center p-2 w-10 h-10 rounded-lg text-gray-700 dark:text-gray-300 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+          "inline-flex items-center justify-center rounded-lg text-gray-700 dark:text-gray-300 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+          size === 'compact' ? "p-1.5 w-8 h-8" : "p-2 w-10 h-10",
           className
         )}
         aria-label="Fahndungssuche öffnen (Strg+K)"
@@ -154,7 +156,7 @@ export function SearchModal({ className = "" }: SearchModalProps) {
         aria-expanded={isOpen}
         aria-haspopup="dialog"
       >
-        <Search className="w-5 h-5" />
+        <Search className={size === 'compact' ? "w-4 h-4" : "w-5 h-5"} />
         
         {/* Professional Tooltip */}
         <span className="
