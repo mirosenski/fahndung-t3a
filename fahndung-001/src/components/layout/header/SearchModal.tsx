@@ -153,25 +153,13 @@ export function SearchModal({ className = "", size = 'default' }: SearchModalPro
       <button
         ref={triggerRef}
         onClick={() => setIsOpen(true)}
-        className={`
-          flex items-center justify-center p-0
-          relative group
-          rounded-xl
-          bg-white dark:bg-gray-900 
-          border-2 border-gray-200 dark:border-gray-700
-          shadow-lg hover:shadow-xl
-          transition-all duration-300 hover:scale-105
-          hover:border-blue-500 dark:hover:border-blue-400
-          focus:outline-none focus:ring-4 focus:ring-blue-500/20
-          ${size === 'compact' ? 'w-10 h-10' : 'w-12 h-12'}
-          ${className}
-        `}
+        className={`inline-flex items-center justify-center p-2 w-10 h-10 rounded-lg text-gray-700 dark:text-gray-300 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 ${className}`}
         aria-label="Fahndungssuche öffnen (Strg+K)"
         aria-keyshortcuts="Control+K"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
       >
-        <Search className={`${size === 'compact' ? 'w-4 h-4' : 'w-5 h-5'} text-gray-700 dark:text-gray-300 group-hover:text-blue-600 transition-colors`} />
+        <Search className={`w-5 h-5`} />
         
         {/* Professional Tooltip */}
         <span className="

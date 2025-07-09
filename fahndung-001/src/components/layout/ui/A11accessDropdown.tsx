@@ -100,7 +100,7 @@ export default function A11accessDropdown() {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen((v) => !v)}
-        className="w-12 h-12 lg:w-12 lg:h-12 md:w-10 md:h-10 sm:w-10 sm:h-10 flex items-center justify-center bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20 rounded-full p-0"
+        className="inline-flex items-center justify-center w-10 h-10 p-2 rounded-lg text-gray-700 dark:text-gray-300 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
         aria-label="Barrierefreiheit-Menü"
         aria-expanded={isOpen}
         type="button"

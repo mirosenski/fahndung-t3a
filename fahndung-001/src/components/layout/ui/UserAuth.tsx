@@ -123,30 +123,21 @@ export default function UserAuth({
 
   // NICHT eingeloggt: Sign-In-Button
   if (!isLoggedIn) {
-    // Mobil: Nur Icon anzeigen
-    if (variant === 'mobile') {
+    // Mobil und Desktop: Nur Icon anzeigen (kompakt, rahmenlos)
+    if (variant === 'mobile' || variant === 'desktop') {
       return (
         <Link
           href="/login"
-          className={`${avatarSizeClasses[size]} flex items-center justify-center bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20`}
+          className={`inline-flex items-center justify-center w-10 h-10 p-2 rounded-lg text-gray-700 dark:text-gray-300 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 ${className}`}
           tabIndex={0}
           aria-label="Anmelden"
         >
-          <User className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+          <User className="w-5 h-5" />
         </Link>
       );
     }
-    // Desktop: Text anzeigen
-    return (
-      <Link
-        href="/login"
-        className={`${buttonSizeClasses[size]} ${className}`}
-        tabIndex={0}
-        aria-label="Anmelden"
-      >
-        <span className="block w-full text-center">Anmelden</span>
-      </Link>
-    );
+    // Fallback (falls weitere Varianten hinzukommen)
+    return null;
   }
 
   // EINGELOGGT: Avatar/Initialen + Dropdown
@@ -167,7 +158,7 @@ export default function UserAuth({
       <div className="flex-shrink-0">
         <button
           ref={avatarButtonRef}
-          className={`${avatarSizeClasses[size]} focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-inset transition-all duration-300 hover:scale-105`}
+          className={`inline-flex items-center justify-center w-10 h-10 p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200 hover:bg-gray-200 dark:hover:bg-gray-700`}
           tabIndex={0}
           aria-label="Benutzermenü öffnen"
           aria-haspopup="true"
@@ -182,9 +173,9 @@ export default function UserAuth({
           }}
         >
           {userImage ? (
-            <img src={userImage} alt="Profilbild" className="rounded-xl object-cover w-full h-full" />
+            <img src={userImage} alt="Profilbild" className="rounded-full object-cover w-full h-full" />
           ) : (
-            <span>D</span>
+            <span className="font-medium text-base">D</span>
           )}
         </button>
       </div>
