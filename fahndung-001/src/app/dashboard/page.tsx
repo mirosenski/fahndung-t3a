@@ -1,11 +1,42 @@
-import { auth } from "~/server/auth";
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function DashboardPage() {
-  const session = await auth();
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from 'next/link';
 
-  if (!session) {
-    redirect("/login");
+export default function DashboardPage() {
+  const router = useRouter();
+  const [userName, setUserName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Prüfe Demo-Session
+    const demoSession = localStorage.getItem("demo-session");
+    if (!demoSession) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const sessionData = JSON.parse(demoSession) as { userName?: string };
+      setUserName(sessionData.userName ?? "Demo User");
+    } catch {
+      router.push("/login");
+      return;
+    }
+
+    setIsLoading(false);
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Lade Dashboard...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -15,7 +46,7 @@ export default async function DashboardPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="mt-2 text-gray-600">
-            Willkommen zurück, {session.user?.name}
+            Willkommen zurück, {userName}
           </p>
         </div>
 
@@ -72,8 +103,8 @@ export default async function DashboardPage() {
             </h2>
           </div>
           <div className="p-6">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <a
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+              <Link
                 href="/fahndung/erstellen"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -82,20 +113,20 @@ export default async function DashboardPage() {
                   <p className="font-medium text-gray-900">Neue Fahndung</p>
                   <p className="text-sm text-gray-600">Fahndung erstellen</p>
                 </div>
-              </a>
+              </Link>
 
-              <a
-                href="/meine-fahndungen"
+              <Link
+                href="/fahndung/meine"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
-                <span className="mr-3 text-2xl">📋</span>
+                <span className="mr-3 text-2xl">🗂️</span>
                 <div>
                   <p className="font-medium text-gray-900">Meine Fahndungen</p>
                   <p className="text-sm text-gray-600">Übersicht anzeigen</p>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/hilfe"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
@@ -104,10 +135,10 @@ export default async function DashboardPage() {
                   <p className="font-medium text-gray-900">Hilfe</p>
                   <p className="text-sm text-gray-600">FAQ & Support</p>
                 </div>
-              </a>
+              </Link>
 
-              <a
-                href="/settings"
+              <Link
+                href="/profil/einstellungen"
                 className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
               >
                 <span className="mr-3 text-2xl">⚙️</span>
@@ -115,7 +146,18 @@ export default async function DashboardPage() {
                   <p className="font-medium text-gray-900">Einstellungen</p>
                   <p className="text-sm text-gray-600">Profil verwalten</p>
                 </div>
-              </a>
+              </Link>
+
+              <Link
+                href="/profil"
+                className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
+              >
+                <span className="mr-3 text-2xl">👤</span>
+                <div>
+                  <p className="font-medium text-gray-900">Profil verwalten</p>
+                  <p className="text-sm text-gray-600">Persönliche Daten</p>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

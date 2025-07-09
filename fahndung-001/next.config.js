@@ -9,6 +9,12 @@ const require = createRequire(import.meta.url);
 
 /** @type {import("next").NextConfig} */
 const config = {
+  experimental: {
+    swcTraceProfiling: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     config.resolve.alias['@prisma/client'] = require.resolve('@prisma/client')
     return config

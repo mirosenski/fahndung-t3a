@@ -95,12 +95,21 @@ export default function HomePage() {
 
           <SearchBar
             onSearch={(query) => {
-              // TODO: Implement search functionality
-              console.log("Search:", query);
+              // Navigation zur Suchseite
+              const searchUrl = `/suche?q=${encodeURIComponent(query)}`;
+              window.location.href = searchUrl;
             }}
             onFilterChange={(filters) => {
-              // TODO: Implement filter functionality
-              console.log("Filters:", filters);
+              // Navigation zur Suchseite mit Filtern
+              const params = new URLSearchParams();
+              if (filters.query) params.set('q', filters.query);
+              if (filters.category) params.set('category', filters.category);
+              if (filters.status) params.set('status', filters.status);
+              if (filters.location) params.set('location', filters.location);
+              if (filters.dateRange) params.set('dateRange', filters.dateRange);
+              
+              const searchUrl = `/suche?${params.toString()}`;
+              window.location.href = searchUrl;
             }}
           />
         </div>

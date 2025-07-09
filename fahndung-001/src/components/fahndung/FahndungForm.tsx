@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 
 interface FahndungFormData {
   title: string;
@@ -12,7 +11,7 @@ interface FahndungFormData {
 }
 
 export default function FahndungForm() {
-  const { data: session } = useSession();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState<FahndungFormData>({
     title: "",
     description: "",
@@ -25,6 +24,21 @@ export default function FahndungForm() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+
+  useEffect(() => {
+    // Prüfe Demo-Session
+    const demoSession = localStorage.getItem("demo-session");
+    if (demoSession) {
+      try {
+        JSON.parse(demoSession);
+        setIsLoggedIn(true);
+      } catch {
+        setIsLoggedIn(false);
+      }
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   const categories = [
     "Vermisste Person",
@@ -97,7 +111,7 @@ export default function FahndungForm() {
     }
   };
 
-  if (!session) {
+  if (!isLoggedIn) {
     return (
       <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6 text-center">
         <h3 className="mb-2 text-lg font-semibold text-yellow-800">
