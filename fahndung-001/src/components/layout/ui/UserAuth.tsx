@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { User } from "lucide-react";
 
@@ -17,18 +18,15 @@ interface UserAuthProps {
  */
 export default function UserAuth({ 
   variant = "desktop", 
-  size = "default",
   className = ""
 }: UserAuthProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userImage, setUserImage] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState<'bottom' | 'top'>('bottom');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
   const firstMenuItemRef = useRef<HTMLAnchorElement>(null);
   const closeTimeout = useRef<NodeJS.Timeout | null>(null);
-  const [dropdownCoords, setDropdownCoords] = useState<{ left: number; top: number } | null>(null);
 
   useEffect(() => {
     const demoSession = localStorage.getItem("demo-session");
@@ -111,16 +109,6 @@ export default function UserAuth({
     window.location.href = "/";
   };
 
-  // Styling-Varianten
-  const buttonSizeClasses = {
-    default: "h-12 px-6 flex items-center justify-center rounded-xl bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20 text-sm font-medium text-gray-900 dark:text-white",
-    compact: "h-10 px-5 flex items-center justify-center rounded-xl bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20 text-xs font-medium text-gray-900 dark:text-white"
-  };
-  const avatarSizeClasses = {
-    default: "w-12 h-12 flex items-center justify-center p-0 rounded-xl border-2 border-blue-700 dark:border-blue-400 shadow-lg text-lg font-medium bg-blue-700 text-white",
-    compact: "w-10 h-10 flex items-center justify-center p-0 rounded-xl border-2 border-blue-700 dark:border-blue-400 shadow-lg text-base font-medium bg-blue-700 text-white"
-  };
-
   // NICHT eingeloggt: Sign-In-Button
   if (!isLoggedIn) {
     // Mobil und Desktop: Nur Icon anzeigen (kompakt, rahmenlos)
@@ -173,7 +161,7 @@ export default function UserAuth({
           }}
         >
           {userImage ? (
-            <img src={userImage} alt="Profilbild" className="rounded-full object-cover w-full h-full" />
+            <Image src={userImage} alt="Profilbild" className="rounded-full object-cover w-full h-full" width={32} height={32} />
           ) : (
             <span className="font-medium text-base">D</span>
           )}
