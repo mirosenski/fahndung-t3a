@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 /**
  * A11accessDropdown Component
@@ -157,30 +158,32 @@ export default function A11accessDropdown() {
           onMouseLeave={handleMouseLeave}
         >
           {/* Leichte Sprache */}
-          <button
+          <Link
+            href="/leichte-sprache"
             className="flex items-center gap-3 w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors group"
-            type="button"
+            onClick={() => setIsOpen(false)}
           >
             <span className="relative w-6 h-6 flex items-center justify-center">
               <LeichteSpracheIcon className="w-6 h-6 text-gray-700 dark:text-gray-200 group-hover:text-blue-700 dark:group-hover:text-blue-200 transition-colors" />
             </span>
             Leichte Sprache
-          </button>
+          </Link>
 
           <div className="border-t my-1 border-gray-200 dark:border-gray-700" />
 
           {/* Gebärdensprache */}
-          <button
+          <Link
+            href="/gebaerdensprache"
             className="flex items-center gap-3 w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/40 focus:bg-blue-100 dark:focus:bg-blue-800 outline-none transition-colors group"
-            type="button"
             tabIndex={0}
             role="menuitem"
+            onClick={() => setIsOpen(false)}
           >
             <span className="relative w-6 h-6 flex items-center justify-center">
               <GebaerdenspracheIcon className="w-6 h-6 text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-200 group-focus:text-blue-700 dark:group-focus:text-blue-200 transition-colors" />
             </span>
             Gebärdensprache
-          </button>
+          </Link>
 
           {/* --- Theme & Schriftgröße --- */}
           <div className="border-t my-2 border-gray-200 dark:border-gray-700" />
