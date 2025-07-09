@@ -7,12 +7,16 @@ import { MobileMenu } from './MobileMenu';
 import { useHeaderScroll } from './hooks/useHeaderScroll';
 import { useMobileMenu } from './hooks/useMobileMenu';
 
+interface HeaderProps {
+  breadcrumb: React.ReactNode;
+}
+
 /**
  * Header Component - Main Container
  * Orchestriert Desktop/Mobile Navigation mit Scroll-Effekten
  * WCAG 2.2 AAA konform mit Skip-Links
  */
-export default function Header() {
+export default function Header({ breadcrumb }: HeaderProps) {
   const { isScrolled } = useHeaderScroll();
   const { isOpen, toggle, close } = useMobileMenu();
 
@@ -34,8 +38,7 @@ export default function Header() {
         aria-label="Hauptnavigation Fahndungsportal"
       >
         {/* Desktop Navigation (1024px+) */}
-        <DesktopHeader isScrolled={isScrolled} />
-        
+        <DesktopHeader isScrolled={isScrolled} breadcrumb={breadcrumb} />
         {/* Mobile Navigation (unter 1024px) */}
         <MobileHeader onMenuToggle={toggle} />
       </header>

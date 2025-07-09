@@ -41,11 +41,8 @@ export default function RootLayout({
             <SessionProvider>
               <Theme accentColor="blue" grayColor="slate" radius="medium" scaling="100%">
                 <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
-                  <Header />
-                  <div className="container mx-auto px-4 pt-32 lg:pt-36">
-                    {breadcrumb}
-                  </div>
-                  <main id="main-content" className="flex-1">{children}</main>
+                  <Header breadcrumb={breadcrumb} />
+                  <main id="main-content" className="flex-1 pt-24">{children}</main>
                   <Footer />
                 </div>
               </Theme>
