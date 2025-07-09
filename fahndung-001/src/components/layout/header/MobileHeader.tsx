@@ -9,14 +9,15 @@ import { SearchModal } from './SearchModal';
 
 interface MobileHeaderProps {
   onMenuToggle: () => void;
+  breadcrumb?: React.ReactNode;
 }
 
 /**
  * MobileHeader Component
  * Mobile Navigation Bar (unter 1024px)
- * Kompakte Header-Leiste mit Hamburger Menu
+ * Kompakte Header-Leiste mit Hamburger Menu und Breadcrumbs
  */
-export function MobileHeader({ onMenuToggle }: MobileHeaderProps) {
+export function MobileHeader({ onMenuToggle, breadcrumb }: MobileHeaderProps) {
   return (
     <div className="lg:hidden w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
       <div className="px-6 py-4 flex items-center justify-between">
@@ -50,6 +51,15 @@ export function MobileHeader({ onMenuToggle }: MobileHeaderProps) {
           </button>
         </div>
       </div>
+      
+      {/* Mobile Breadcrumbs - unter der Hauptnavigation */}
+      {breadcrumb && (
+        <div className="px-6 pb-3 border-t border-gray-100 dark:border-gray-800">
+          <div className="pt-3">
+            {breadcrumb}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

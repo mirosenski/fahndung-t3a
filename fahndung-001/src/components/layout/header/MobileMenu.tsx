@@ -58,15 +58,17 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="lg:hidden !fixed !inset-0 !max-w-none !w-screen !h-screen !rounded-none !left-0 !top-0 !translate-x-0 !translate-y-0 z-[9999] p-0 border-0 bg-white dark:bg-gray-900">
+      <DialogContent className="lg:hidden !fixed !inset-0 !max-w-none !w-screen !h-screen !rounded-none !left-0 !top-0 !translate-x-0 !translate-y-0 z-[9999] p-0 border-0 bg-white dark:bg-gray-900" showCloseButton={false}>
         {/* Header */}
-        <DialogHeader className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">
-            🔍 Fahndungsportal
+        <DialogHeader className="flex flex-col items-center justify-center pt-3 pb-6 border-b border-gray-200 dark:border-gray-700 gap-2">
+          <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white text-center mt-0 mb-3">
+            Fahndungsportal
           </DialogTitle>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-row items-center justify-center gap-6 w-full mb-0">
             <ThemeToggle />
-            <A11accessDropdown />
+            <div className="relative inline-block">
+              <A11accessDropdown centered />
+            </div>
             <button
               ref={firstFocusableRef}
               onClick={onClose}

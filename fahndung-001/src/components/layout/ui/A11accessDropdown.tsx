@@ -47,21 +47,29 @@ export const GebaerdenspracheIcon = ({ className = "" }) => (
   </svg>
 );
 
-export default function A11accessDropdown() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Mouse-Over/Leave Logik für Dropdown
+export default function A11accessDropdown({ centered = false }: { centered?: boolean }) {
+  const [isOpen, setIsOpen] = React.useState(false);
   const closeTimeout = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Mouse-Over/Leave nur auf Desktop (ab lg)
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
+
   const handleMouseEnter = () => {
-    if (closeTimeout.current) clearTimeout(closeTimeout.current);
-    setIsOpen(true);
+    if (isDesktop) {
+      if (closeTimeout.current) clearTimeout(closeTimeout.current);
+      setIsOpen(true);
+    }
   };
   const handleMouseLeave = () => {
-    closeTimeout.current = setTimeout(() => setIsOpen(false), 150);
+    if (isDesktop) {
+      closeTimeout.current = setTimeout(() => setIsOpen(false), 150);
+    }
+  };
+  const handleClick = () => {
+    setIsOpen((v) => !v);
   };
 
-  // ESC schließt Dropdown
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isOpen) return;
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
@@ -70,24 +78,18 @@ export default function A11accessDropdown() {
     return () => document.removeEventListener('keydown', handleEsc);
   }, [isOpen]);
 
-  // Dropdown bei Klick außerhalb oder Scroll schließen
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isOpen) return;
     const handleClick = (e: MouseEvent) => {
       if (!(e.target as Element).closest('[data-a11y-dropdown]')) {
         setIsOpen(false);
       }
     };
-    const handleScroll = () => setIsOpen(false);
     document.addEventListener('mousedown', handleClick);
-    window.addEventListener('scroll', handleScroll, true);
-    return () => {
-      document.removeEventListener('mousedown', handleClick);
-      window.removeEventListener('scroll', handleScroll, true);
-    };
+    return () => document.removeEventListener('mousedown', handleClick);
   }, [isOpen]);
 
-  // Kontrast- und Schriftgrößen-Logik (wie in A11nav)
+  // Schriftgrößen-Logik
   const increaseFontSize = () => {
     const currentSize = parseInt(localStorage.getItem('font-size') ?? '100');
     const newSize = Math.min(currentSize + 10, 150);
@@ -130,13 +132,15 @@ export default function A11accessDropdown() {
   }, []);
 
   return (
-    <div className="relative">
+    <div
+      className={centered ? 'relative inline-block' : 'relative'}
+    >
       {/* Toggle Button */}
       <button
-        onClick={() => setIsOpen((v) => !v)}
+        onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`inline-flex items-center justify-center w-10 h-10 p-2 rounded-lg
+        className={`inline-flex items-center justify-center ${centered ? 'w-14 h-14' : 'w-10 h-10'} p-2 rounded-lg
         ${isOpen ? 'text-blue-700 dark:text-blue-200' : 'text-gray-700 dark:text-gray-200'}
         hover:text-blue-700 dark:hover:text-blue-200
         bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
@@ -152,7 +156,11 @@ export default function A11accessDropdown() {
       {/* Dropdown */}
       {isOpen && (
         <div
-          className="absolute right-0 top-10 z-20 min-w-[220px] rounded-lg bg-white dark:bg-gray-800 py-2 shadow-lg border border-gray-200 dark:border-gray-700 animate-fade-in"
+          className={
+            centered
+              ? 'absolute left-1/2 -translate-x-1/2 top-full mt-2 z-20 min-w-[220px] rounded-lg bg-white dark:bg-gray-800 py-2 shadow-lg border border-gray-200 dark:border-gray-700 animate-fade-in'
+              : 'absolute right-0 top-10 z-20 min-w-[220px] rounded-lg bg-white dark:bg-gray-800 py-2 shadow-lg border border-gray-200 dark:border-gray-700 animate-fade-in'
+          }
           data-a11y-dropdown
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -185,7 +193,7 @@ export default function A11accessDropdown() {
             Gebärdensprache
           </Link>
 
-          {/* --- Theme & Schriftgröße --- */}
+          {/* --- Schriftgröße --- */}
           <div className="border-t my-2 border-gray-200 dark:border-gray-700" />
           <div className="px-4 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide text-center">Schriftgröße</div>
           <div className="flex items-center gap-2 px-4 py-2 justify-center">
@@ -193,6 +201,7 @@ export default function A11accessDropdown() {
               onClick={decreaseFontSize}
               className="p-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               aria-label="Schriftgröße verkleinern"
+              type="button"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
@@ -201,6 +210,7 @@ export default function A11accessDropdown() {
             <button
               onClick={resetFontSize}
               className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              type="button"
             >
               Reset
             </button>
@@ -208,6 +218,7 @@ export default function A11accessDropdown() {
               onClick={increaseFontSize}
               className="p-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               aria-label="Schriftgröße vergrößern"
+              type="button"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -215,6 +226,18 @@ export default function A11accessDropdown() {
             </button>
           </div>
         </div>
+      )}
+      {/* Media Query für mobile Zentrierung, nur wenn centered aktiv ist */}
+      {centered && (
+        <style jsx>{`
+          @media (max-width: 1024px) {
+            [data-a11y-dropdown] {
+              left: 50% !important;
+              transform: translateX(-50%) !important;
+              right: auto !important;
+            }
+          }
+        `}</style>
       )}
     </div>
   );

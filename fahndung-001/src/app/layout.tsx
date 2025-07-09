@@ -42,7 +42,7 @@ export default function RootLayout({
               <Theme accentColor="blue" grayColor="slate" radius="medium" scaling="100%">
                 <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
                   <Header breadcrumb={breadcrumb} />
-                  <main id="main-content" className="flex-1 pt-5 md:pt-40">{children}</main>
+                  <main id="main-content" className="flex-1 pt-28 md:pt-40">{children}</main>
                   <Footer />
                 </div>
               </Theme>

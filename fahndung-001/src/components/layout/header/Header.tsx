@@ -40,7 +40,7 @@ export default function Header({ breadcrumb }: HeaderProps) {
         {/* Desktop Navigation (1024px+) */}
         <DesktopHeader isScrolled={isScrolled} breadcrumb={breadcrumb} />
         {/* Mobile Navigation (unter 1024px) */}
-        <MobileHeader onMenuToggle={toggle} />
+        <MobileHeader onMenuToggle={toggle} breadcrumb={breadcrumb} />
       </header>
 
       {/* Mobile Full-Screen Menu */}
