@@ -47,7 +47,7 @@ export const GebaerdenspracheIcon = ({ className = "" }) => (
   </svg>
 );
 
-export default function A11accessDropdown({ centered = false }: { centered?: boolean }) {
+export default function A11accessDropdown({ centered = false, onClose }: { centered?: boolean; onClose?: () => void }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const closeTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -67,6 +67,14 @@ export default function A11accessDropdown({ centered = false }: { centered?: boo
   };
   const handleClick = () => {
     setIsOpen((v) => !v);
+  };
+
+  // Handler für Link-Klicks - schließt Dropdown und optional das mobile Menü
+  const handleLinkClick = () => {
+    setIsOpen(false);
+    if (onClose) {
+      onClose();
+    }
   };
 
   React.useEffect(() => {
@@ -169,7 +177,7 @@ export default function A11accessDropdown({ centered = false }: { centered?: boo
           <Link
             href="/leichte-sprache"
             className="flex items-center gap-3 w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors group"
-            onClick={() => setIsOpen(false)}
+            onClick={handleLinkClick}
           >
             <span className="relative w-6 h-6 flex items-center justify-center">
               <LeichteSpracheIcon className="w-6 h-6 text-gray-700 dark:text-gray-200 group-hover:text-blue-700 dark:group-hover:text-blue-200 transition-colors" />
@@ -185,7 +193,7 @@ export default function A11accessDropdown({ centered = false }: { centered?: boo
             className="flex items-center gap-3 w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/40 focus:bg-blue-100 dark:focus:bg-blue-800 outline-none transition-colors group"
             tabIndex={0}
             role="menuitem"
-            onClick={() => setIsOpen(false)}
+            onClick={handleLinkClick}
           >
             <span className="relative w-6 h-6 flex items-center justify-center">
               <GebaerdenspracheIcon className="w-6 h-6 text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-200 group-focus:text-blue-700 dark:group-focus:text-blue-200 transition-colors" />

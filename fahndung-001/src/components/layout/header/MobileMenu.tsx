@@ -67,7 +67,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <div className="flex flex-row items-center justify-center gap-6 w-full mb-0">
             <ThemeToggle />
             <div className="relative inline-block">
-              <A11accessDropdown centered />
+              <A11accessDropdown centered onClose={onClose} />
             </div>
             <button
               ref={firstFocusableRef}
