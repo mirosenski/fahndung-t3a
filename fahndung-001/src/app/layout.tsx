@@ -1,7 +1,9 @@
 import "~/styles/globals.css";
+import "@radix-ui/themes/styles.css";
 
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Theme } from "@radix-ui/themes";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { SessionProvider } from "next-auth/react";
@@ -33,11 +35,13 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="system" storageKey="theme">
           <TRPCReactProvider>
             <SessionProvider>
-              <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
-                <Header />
-                <main id="main-content" className="flex-1 pt-32 lg:pt-36">{children}</main>
-                <Footer />
-              </div>
+              <Theme accentColor="blue" grayColor="slate" radius="medium" scaling="100%">
+                <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+                  <Header />
+                  <main id="main-content" className="flex-1 pt-32 lg:pt-36">{children}</main>
+                  <Footer />
+                </div>
+              </Theme>
             </SessionProvider>
           </TRPCReactProvider>
         </ThemeProvider>
