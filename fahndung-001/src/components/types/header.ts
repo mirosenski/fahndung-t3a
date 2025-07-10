@@ -1,4 +1,4 @@
-import type { MenuItem, MenuSection } from '../constants/navigationData';
+import type { MenuItem, MenuSection } from "../constants/navigationData";
 
 export type { MenuItem, MenuSection };
 
@@ -12,6 +12,7 @@ export interface DesktopHeaderProps {
 
 export interface MobileHeaderProps {
   onMenuToggle: () => void;
+  isOpen: boolean;
 }
 
 export interface MobileMenuProps {
@@ -20,8 +21,8 @@ export interface MobileMenuProps {
 }
 
 export interface SearchBarProps {
-  variant?: 'desktop' | 'mobile';
-  size?: 'default' | 'compact' | 'large';
+  variant?: "desktop" | "mobile";
+  size?: "default" | "compact" | "large";
   className?: string;
   placeholder?: string;
   onSearch?: (query: string) => void;
@@ -32,4 +33,4 @@ export interface SearchBarProps {
 export interface HoverMegaMenuProps {
   title: string;
   items?: MenuItem[];
-} 
+}
