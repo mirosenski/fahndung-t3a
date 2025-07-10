@@ -170,6 +170,7 @@ export default function A11accessDropdown({ centered = false, onClose }: { cente
               : 'absolute right-0 top-10 z-20 min-w-[220px] rounded-lg bg-white dark:bg-gray-800 py-2 shadow-lg border border-gray-200 dark:border-gray-700 animate-fade-in'
           }
           data-a11y-dropdown
+          role="menu"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -178,6 +179,7 @@ export default function A11accessDropdown({ centered = false, onClose }: { cente
             href="/leichte-sprache"
             className="flex items-center gap-3 w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors group"
             onClick={handleLinkClick}
+            role="menuitem"
           >
             <span className="relative w-6 h-6 flex items-center justify-center">
               <LeichteSpracheIcon className="w-6 h-6 text-gray-700 dark:text-gray-200 group-hover:text-blue-700 dark:group-hover:text-blue-200 transition-colors" />
@@ -210,6 +212,7 @@ export default function A11accessDropdown({ centered = false, onClose }: { cente
               className="p-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               aria-label="Schriftgröße verkleinern"
               type="button"
+              role="menuitem"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
@@ -219,6 +222,7 @@ export default function A11accessDropdown({ centered = false, onClose }: { cente
               onClick={resetFontSize}
               className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
               type="button"
+              role="menuitem"
             >
               Reset
             </button>
@@ -227,6 +231,7 @@ export default function A11accessDropdown({ centered = false, onClose }: { cente
               className="p-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               aria-label="Schriftgröße vergrößern"
               type="button"
+              role="menuitem"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
