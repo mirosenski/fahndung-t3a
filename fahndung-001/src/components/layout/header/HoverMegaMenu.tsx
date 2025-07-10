@@ -10,16 +10,10 @@ import {
   NavigationMenuTrigger,
 } from "~/components/ui/navigation-menu";
 import { cn } from "~/lib/utils";
+import type { NavigationSection } from "~/lib/navigation";
 
 interface HoverMegaMenuProps {
-  title: string;
-}
-
-interface MenuItem {
-  label: string;
-  href: string;
-  description: string;
-  urgent?: boolean;
+  section: NavigationSection;
 }
 
 /**
@@ -28,79 +22,8 @@ interface MenuItem {
  * Keyboard Navigation und Focus Management
  * Jetzt mit Schadcn/UI NavigationMenu
  */
-export function HoverMegaMenu({ title }: HoverMegaMenuProps) {
-  // Menu Data
-  const menuData: Record<string, MenuItem[]> = {
-    'SICHERHEIT': [
-      { 
-        label: 'Aktuelle Fahndungen', 
-        href: '/fahndungen/aktuell', 
-        description: 'Öffentliche Fahndungen und Eilmeldungen', 
-        urgent: true 
-      },
-      { 
-        label: 'Vermisste Personen', 
-        href: '/vermisste', 
-        description: 'Vermisstenfälle in Baden-Württemberg'
-      },
-      { 
-        label: 'Gesuchte Straftäter', 
-        href: '/gesuchte', 
-        description: 'Öffentliche Straftätersuche'
-      },
-      { 
-        label: 'Sicherheitswarnungen', 
-        href: '/warnungen', 
-        description: 'Aktuelle Warnungen und Betrugsmeldungen'
-      }
-    ],
-    'SERVICE': [
-      { 
-        label: 'Hinweise melden', 
-        href: '/hinweise/melden', 
-        description: 'Sichere Hinweisübermittlung'
-      },
-      { 
-        label: 'Online-Anzeige', 
-        href: '/anzeige/online', 
-        description: 'Strafanzeige online erstatten'
-      },
-      { 
-        label: 'Notruf & Kontakt', 
-        href: '/kontakt', 
-        description: 'Notrufnummern und Dienststellen'
-      },
-      { 
-        label: 'Bürgerservice', 
-        href: '/service', 
-        description: 'Führungszeugnis und Services'
-      }
-    ],
-    'POLIZEI': [
-      { 
-        label: 'Über die Polizei BW', 
-        href: '/ueber-uns', 
-        description: 'Organisation und Aufgaben'
-      },
-      { 
-        label: 'Dienststellen', 
-        href: '/dienststellen', 
-        description: 'Standorte und Öffnungszeiten'
-      },
-      { 
-        label: 'Karriere', 
-        href: '/karriere', 
-        description: 'Ausbildung und Stellenangebote'
-      },
-      { 
-        label: 'Presse', 
-        href: '/presse', 
-        description: 'Pressemitteilungen und Medien'
-      }
-    ]
-  };
-
-  const items = menuData[title] ?? [];
+export function HoverMegaMenu({ section }: HoverMegaMenuProps) {
+  const { title, items } = section;
 
   return (
     <NavigationMenu>
