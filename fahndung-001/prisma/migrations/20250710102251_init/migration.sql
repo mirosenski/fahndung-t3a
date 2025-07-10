@@ -1,7 +1,20 @@
+-- CreateEnum
+CREATE TYPE "Status" AS ENUM ('NEW', 'ACTIVE', 'URGENT', 'ARCHIVED', 'CLOSED');
+
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('ADMIN', 'EDITOR', 'USER');
+
+-- CreateEnum
+CREATE TYPE "FahndungType" AS ENUM ('PERSON', 'VEHICLE', 'OBJECT');
+
 -- CreateTable
 CREATE TABLE "Post" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "status" "Status" NOT NULL DEFAULT 'NEW',
+    "publishStart" TIMESTAMP(3),
+    "publishEnd" TIMESTAMP(3),
+    "visible" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdById" TEXT NOT NULL,
@@ -56,6 +69,42 @@ CREATE TABLE "VerificationToken" (
     "expires" TIMESTAMP(3) NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "AuditLog" (
+    "id" SERIAL NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT,
+    "ip" TEXT,
+    "userAgent" TEXT,
+    "action" TEXT NOT NULL,
+    "entity" TEXT NOT NULL,
+    "entityId" TEXT NOT NULL,
+    "success" BOOLEAN NOT NULL,
+    "details" JSONB NOT NULL,
+
+    CONSTRAINT "AuditLog_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Fahndung" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "status" "Status" NOT NULL DEFAULT 'NEW',
+    "type" "FahndungType" NOT NULL,
+    "reward" DOUBLE PRECISION,
+    "gender" TEXT NOT NULL,
+    "age" INTEGER NOT NULL,
+    "lastSeen" TIMESTAMP(3) NOT NULL,
+    "location" TEXT NOT NULL,
+    "imageURL" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
+
+    CONSTRAINT "Fahndung_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE INDEX "Post_name_idx" ON "Post"("name");
 
@@ -74,6 +123,9 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
+-- CreateIndex
+CREATE INDEX "AuditLog_entity_entityId_idx" ON "AuditLog"("entity", "entityId");
+
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -82,4 +134,3 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
