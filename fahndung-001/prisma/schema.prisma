@@ -73,3 +73,17 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model PerformanceMetric {
+  id        Int      @id @default(autoincrement())
+  name      String
+  duration  Int
+  createdAt DateTime @default(now())
+}
+
+model ErrorLog {
+  id        Int      @id @default(autoincrement())
+  message   String
+  stack     String?
+  createdAt DateTime @default(now())
+}
