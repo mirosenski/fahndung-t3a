@@ -1,5 +1,3 @@
-import type { NavigationItem, NavigationSection } from "~/lib/navigation";
-
 export type { NavigationItem as MenuItem, NavigationSection as MenuSection };
 
 export interface HeaderProps {
@@ -12,6 +10,7 @@ export interface DesktopHeaderProps {
 
 export interface MobileHeaderProps {
   onMenuToggle: () => void;
+  isOpen: boolean;
 }
 
 export interface MobileMenuProps {
@@ -20,8 +19,8 @@ export interface MobileMenuProps {
 }
 
 export interface SearchBarProps {
-  variant?: 'desktop' | 'mobile';
-  size?: 'default' | 'compact' | 'large';
+  variant?: "desktop" | "mobile";
+  size?: "default" | "compact" | "large";
   className?: string;
   placeholder?: string;
   onSearch?: (query: string) => void;
@@ -30,5 +29,4 @@ export interface SearchBarProps {
 }
 
 export interface HoverMegaMenuProps {
-  section: MenuSection;
-}
+
