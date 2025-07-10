@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
+import PerformanceMetrics from "./PerformanceMetrics";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -203,8 +204,9 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
-          </div>
         </div>
+      </div>
+      <PerformanceMetrics />
       </div>
     </div>
   );
