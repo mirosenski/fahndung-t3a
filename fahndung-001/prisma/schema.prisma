@@ -92,3 +92,19 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  userId    String?
+  ip        String?
+  userAgent String?
+
+  action   String
+  entity   String
+  entityId String
+  success  Boolean
+  details  Json
+
+  @@index([entity, entityId])
+}

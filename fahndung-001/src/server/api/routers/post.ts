@@ -6,7 +6,6 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { requirePermission } from "~/server/permissions";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
@@ -20,14 +19,24 @@ export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      await requirePermission("post:create", ctx.session);
-      return ctx.db.post.create({
         data: {
           name: input.name,
           status: Status.NEW,
           createdBy: { connect: { id: ctx.session.user.id } },
         },
       });
+
+      void createAuditLog({
+        action: "create",
+        entity: "Post",
+        entityId: String(post.id),
+        success: true,
+        details: { name: input.name },
+        userId: ctx.session.user.id,
+        headers: ctx.headers,
+      });
+
+      return post;
     }),
 
   update: protectedProcedure
