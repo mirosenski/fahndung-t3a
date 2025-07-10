@@ -13,10 +13,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import ThemeToggle from "../ui/ThemeToggle";
-import { navigationData } from "../../constants/navigationData";
-import type { MenuSection } from "../../types/header";
-import A11accessDropdown from "../ui/A11accessDropdown";
+
 import { cn } from "~/lib/utils";
 
 interface MobileMenuProps {
@@ -34,20 +31,6 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const firstFocusableRef = useRef<HTMLButtonElement>(null);
 
   // Menu Data
-  const menuSections: MenuSection[] = [
-    {
-      title: "SICHERHEIT",
-      items: navigationData.SICHERHEIT,
-    },
-    {
-      title: "SERVICE",
-      items: navigationData.SERVICE,
-    },
-    {
-      title: "POLIZEI",
-      items: navigationData.POLIZEI,
-    },
-  ];
 
   // Focus Management
   useEffect(() => {

@@ -1,6 +1,4 @@
-import type { MenuItem, MenuSection } from "../constants/navigationData";
-
-export type { MenuItem, MenuSection };
+export type { NavigationItem as MenuItem, NavigationSection as MenuSection };
 
 export interface HeaderProps {
   className?: string;
@@ -31,6 +29,4 @@ export interface SearchBarProps {
 }
 
 export interface HoverMegaMenuProps {
-  title: string;
-  items?: MenuItem[];
-}
+
