@@ -15,6 +15,9 @@ import {
 } from "~/components/ui/accordion";
 
 import { cn } from "~/lib/utils";
+import ThemeToggle from "../ui/ThemeToggle";
+import A11accessDropdown from "../ui/A11accessDropdown";
+import { navigation } from "~/lib/navigation";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -84,7 +87,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         {/* Menu Sections */}
         <div className="max-h-[60vh] flex-1 overflow-y-auto">
           <Accordion type="single" collapsible className="w-full">
-            {menuSections.map((section) => (
+            {navigation.map((section) => (
               <AccordionItem
                 key={section.title}
                 value={section.title}
