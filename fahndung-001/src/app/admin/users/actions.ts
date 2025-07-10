@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 
 import { db } from "~/server/db";
