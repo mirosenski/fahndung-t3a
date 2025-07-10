@@ -27,3 +27,15 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+## Database Migrations
+
+1. Copy `.env.example` to `.env` and adjust `DATABASE_URL` if needed.
+2. Run `./start-database.sh` to launch a local PostgreSQL container.
+3. Generate and apply migrations with:
+
+```bash
+pnpm exec prisma migrate dev --name init
+```
+
+This will create the `prisma/migrations` folder and update your database schema.
