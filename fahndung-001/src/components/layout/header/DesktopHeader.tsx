@@ -6,6 +6,7 @@ import ThemeToggle from '../ui/ThemeToggle';
 import A11nav from '../ui/a11nav';
 import UserAuth from '../ui/UserAuth';
 import { HoverMegaMenu } from './HoverMegaMenu';
+import { navigation } from "~/lib/navigation";
 import { SearchModal } from './SearchModal';
 import A11accessDropdown from '../ui/A11accessDropdown';
 
@@ -36,9 +37,9 @@ export default function DesktopHeader({ isScrolled, breadcrumb }: DesktopHeaderP
           aria-label="Hauptnavigation Desktop"
         >
           {/* Mega Menu Items */}
-          <HoverMegaMenu title="SICHERHEIT" />
-          <HoverMegaMenu title="SERVICE" />
-          <HoverMegaMenu title="POLIZEI" />
+          {navigation.map((section) => (
+            <HoverMegaMenu key={section.id} section={section} />
+          ))}
           {/* Right Actions */}
           <div className="flex items-center gap-3 ml-6">
             <ThemeToggle />

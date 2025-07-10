@@ -14,8 +14,8 @@ import {
   AccordionTrigger,
 } from "~/components/ui/accordion";
 import ThemeToggle from '../ui/ThemeToggle';
-import { navigationData } from '../../constants/navigationData';
-import type { MenuSection } from '../../types/header';
+import { navigation } from "~/lib/navigation";
+import type { NavigationSection } from "~/lib/navigation";
 import A11accessDropdown from '../ui/A11accessDropdown';
 import { cn } from "~/lib/utils";
 
@@ -34,20 +34,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const firstFocusableRef = useRef<HTMLButtonElement>(null);
 
   // Menu Data
-  const menuSections: MenuSection[] = [
-    {
-      title: 'SICHERHEIT',
-      items: navigationData.SICHERHEIT
-    },
-    {
-      title: 'SERVICE',
-      items: navigationData.SERVICE
-    },
-    {
-      title: 'POLIZEI',
-      items: navigationData.POLIZEI
-    }
-  ];
+  const menuSections: NavigationSection[] = navigation;
 
   // Focus Management
   useEffect(() => {
