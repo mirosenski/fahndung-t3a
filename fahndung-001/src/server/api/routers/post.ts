@@ -5,6 +5,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { createAuditLog } from "~/lib/audit";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
@@ -18,12 +19,24 @@ export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.post.create({
+      const post = await ctx.db.post.create({
         data: {
           name: input.name,
           createdBy: { connect: { id: ctx.session.user.id } },
         },
       });
+
+      void createAuditLog({
+        action: "create",
+        entity: "Post",
+        entityId: String(post.id),
+        success: true,
+        details: { name: input.name },
+        userId: ctx.session.user.id,
+        headers: ctx.headers,
+      });
+
+      return post;
     }),
 
   getLatest: protectedProcedure.query(async ({ ctx }) => {
