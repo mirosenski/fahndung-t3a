@@ -15,9 +15,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Status {
+  NEW
+  ACTIVE
+  URGENT
+  ARCHIVED
+  CLOSED
+}
+
 model Post {
   id        Int      @id @default(autoincrement())
   name      String
+  status    Status   @default(NEW)
+  publishStart DateTime?
+  publishEnd   DateTime?
+  visible   Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -59,11 +71,18 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  USER
 }
 
 model VerificationToken {
@@ -74,16 +93,4 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model PerformanceMetric {
-  id        Int      @id @default(autoincrement())
-  name      String
-  duration  Int
-  createdAt DateTime @default(now())
-}
-
-model ErrorLog {
-  id        Int      @id @default(autoincrement())
-  message   String
-  stack     String?
-  createdAt DateTime @default(now())
 }
